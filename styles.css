@@ -77,3 +77,70 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%
     gap: 1rem;
     overflow: scroll;
 }
+
+.todo {
+    display: grid;
+    grid-template-columns: 2fr .5fr;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #30A2FF;
+    padding: 1rem;
+    border-radius: .7rem;
+    box-shadow: 1rem 1rem 1rem .1rem rgba(5, 5, 5, 0.032);
+}
+
+.todo {
+    -webkit-animation-name: slideInUp;
+    animation-name: slideInUp;
+    -webkit-animation-duration: 1.7s;
+    animation-duration: 1.7s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+@-webkit-keyframes slideInUp {
+    0% {
+        -webkit-transform: translateY(1500%);
+        transform: translateY(1500%);
+        visibility: visible;
+    }
+    100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+@keyframes slideInUp {
+    0% {
+        -webkit-transform: translateY(1500%);
+        transform: translateY(1500%);
+        visibility: visible;
+    }
+    100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+} 
+
+
+.todoText {
+    font-size: 1.6rem;
+    color: #fff;
+}
+
+.buttonsContainer {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-evenly;
+}
+
+.buttonsContainer > span {
+    font-size: 1.4rem;
+    color: #fff;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.buttonsContainer > span:hover {
+    color: #cb4086;
+}
