@@ -60,7 +60,7 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%
     color: rgb(183, 183, 183);
 }
 
-.submitButton {
+.addTodoButton {
     cursor: pointer;
     border: .15rem solid #1e80a3;
     padding: .51rem 0;
