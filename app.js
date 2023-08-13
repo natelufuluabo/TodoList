@@ -8,6 +8,9 @@ const addToDo = (id, value, container) => {
     const newElement = document.createElement("div");
     newElement.classList.add("todo");
     newElement.setAttribute('id', `todo-${id}`);
+
+    let completed = false;
+
     const editInputId = `editInput-${id}`;
     const updateTodoButtonId = `updateTodoButton-${id}`;
     const buttonsContainerId = `buttonsContainer-${id}`;
@@ -16,13 +19,23 @@ const addToDo = (id, value, container) => {
     const deleteButtonId = `deleteButton-${id}`;
     const inputContainerId = `inputContainer-${id}`;
     const todoContainerId = `todo-${id}`;
+    const checkButtonId = `completed-${id}`;
+    const unCheckButtonId = `uncompleted-${id}`;
 
     newElement.innerHTML = `
         <div id=${inputContainerId} class="inputContainer hidden">
             <input id=${editInputId} class="addInput" type="text" placeholder="Enter to do here" />
             <button id=${updateTodoButtonId} class="addTodoButton">Update</button>
         </div>
-        <p id=${todoTextId} class="todoText">${value}</p>
+        <div class="text-check">
+            <button id=${unCheckButtonId}>
+                <i class="fa-regular fa-circle"></i>
+            </button>
+            <button id=${checkButtonId}>
+                <i  class="fa-regular fa-circle-check"></i>
+            </button>
+            <p id=${todoTextId} class="todoText">${value}</p>
+        </div>
         <div id=${buttonsContainerId} class="buttonsContainer">
             <span id=${editButtonId}>Edit</span>
             <span id=${deleteButtonId}>Delete</span>
@@ -31,6 +44,8 @@ const addToDo = (id, value, container) => {
 
     container.append(newElement);
 
+    const checkButton = document.querySelector(`#${checkButtonId}`);
+    const unCheckButton = document.querySelector(`#${unCheckButtonId}`);
     const todoContainer = document.querySelector(`#${todoContainerId}`);
     const editButton = document.querySelector(`#${editButtonId}`);
     const updateTodoButton = document.querySelector(`#${updateTodoButtonId}`);
@@ -38,6 +53,19 @@ const addToDo = (id, value, container) => {
     const todoText = document.querySelector(`#${todoTextId}`);
     const buttonsContainer = document.querySelector(`#${buttonsContainerId}`);
     const inputContainer = document.querySelector(`#${inputContainerId}`);
+
+    checkButton.classList.add("hidden");
+    checkButton.addEventListener("click", () => {
+        unCheckButton.classList.remove("hidden");
+        checkButton.classList.add("hidden");
+        todoText.classList.remove("completed");
+    });
+
+    unCheckButton.addEventListener("click", () => {
+        checkButton.classList.remove("hidden");
+        unCheckButton.classList.add("hidden");
+        todoText.classList.add("completed");
+    });
 
     editButton.addEventListener("click", () => {
         editInput.value = todoText.innerHTML;

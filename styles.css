@@ -121,10 +121,28 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%
     }
 } 
 
+.text-check {
+    display: flex;
+    gap: 1rem;
+}
+
+.text-check > button {
+    border: none;
+    background-color: #30A2FF;
+    color: aquamarine;
+    font-size: 1.8rem;
+    transition: all 0.4s;
+}
 
 .todoText {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     color: #fff;
+    transition: all 0.4s;
+}
+
+.completed {
+    color: #494949;
+    text-decoration: line-through;
 }
 
 .buttonsContainer {
