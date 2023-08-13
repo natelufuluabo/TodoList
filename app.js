@@ -9,8 +9,6 @@ const addToDo = (id, value, container) => {
     newElement.classList.add("todo");
     newElement.setAttribute('id', `todo-${id}`);
 
-    let completed = false;
-
     const editInputId = `editInput-${id}`;
     const updateTodoButtonId = `updateTodoButton-${id}`;
     const buttonsContainerId = `buttonsContainer-${id}`;
@@ -42,12 +40,13 @@ const addToDo = (id, value, container) => {
         </div>
     `;
 
-    container.append(newElement);
+    container.prepend(newElement);
 
     const checkButton = document.querySelector(`#${checkButtonId}`);
     const unCheckButton = document.querySelector(`#${unCheckButtonId}`);
     const todoContainer = document.querySelector(`#${todoContainerId}`);
     const editButton = document.querySelector(`#${editButtonId}`);
+    const deleteButton = document.querySelector(`#${deleteButtonId}`);
     const updateTodoButton = document.querySelector(`#${updateTodoButtonId}`);
     const editInput = document.querySelector(`#${editInputId}`);
     const todoText = document.querySelector(`#${todoTextId}`);
@@ -83,6 +82,11 @@ const addToDo = (id, value, container) => {
         todoText.classList.remove("hidden");
         buttonsContainer.classList.remove("hidden");
         inputContainer.classList.add("hidden");
+    });
+
+    deleteButton.addEventListener("click", () => {
+        todoContainer.parentNode.removeChild(todoContainer);
+        console.log(todoContainer);
     });
 };
 
