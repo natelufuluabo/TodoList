@@ -3,31 +3,71 @@ const addInput = document.querySelector("#addInput");
 const addTodoButton = document.querySelector("#addTodoButton");
 const todosContainer = document.querySelector("#todosContainer");
 
-
-addTodoButton.addEventListener("click", () => {
+// Functions 
+const addToDo = (id, value, container) => {
     const newElement = document.createElement("div");
-    newElement.classList.add("todo")
-    const value = addInput.value;
+    newElement.classList.add("todo");
+    const editInputId = `editInput-${id}`;
+    const updateTodoButtonId = `updateTodoButton-${id}`;
+    const buttonsContainerId = `buttonsContainer-${id}`;
+    const todoTextId = `todoText-${id}`;
+    const editButtonId = `editButton-${id}`;
+    const deleteButtonId = `deleteButton-${id}`;
+    const inputContainerId = `inputContainer-${id}`;
     newElement.innerHTML = `
-        <div id="inputContainer" class="inputContainer hidden">
-            <input id="editInput" class="addInput" type="text" placeholder="Enter to do here" />
-            <button id="updateTodoButton" class="addTodoButton">Update</button>
+        <div id=${inputContainerId} class="inputContainer hidden">
+            <input id=${editInputId} class="addInput" type="text" placeholder="Enter to do here" />
+            <button id=${updateTodoButtonId} class="addTodoButton">Update</button>
         </div>
-        <p id="todoText" class="todoText">${value}</p>
-        <div id="buttonsContainer" class="buttonsContainer">
-            <span id="editButton">Edit</span>
-            <span id="deleteButton">Delete</span>
+        <p id=${todoTextId} class="todoText">${value}</p>
+        <div id=${buttonsContainerId} class="buttonsContainer">
+            <span id=${editButtonId}>Edit</span>
+            <span id=${deleteButtonId}>Delete</span>
         </div>
     `;
-    todosContainer.append(newElement);
-    document.querySelector("#editButton").addEventListener("click", () => {
-        document.querySelector("#editInput").value = document.querySelector("#todoText").innerHTML;
-        document.querySelector(".todo").classList.add("todo2");
-        document.querySelector(".todo2").classList.remove("todo");
-        document.querySelector("#todoText").classList.add("hidden");
-        document.querySelector("#buttonsContainer").classList.add("hidden");
-        document.querySelector("#inputContainer").classList.remove("hidden");
-    });
+    container.append(newElement);
+};
+
+let id = 0;
+
+addTodoButton.addEventListener("click", () => {
+    const value = addInput.value;
+    if (value.length === 0) return;
+    addToDo(id, value, todosContainer);
+    id++;
+    addInput.value = "";
+    // const editButton = document.querySelectorAll("#editButton");
+    // const editInput = document.querySelectorAll("#editInput");
+    // const todo = document.querySelectorAll(".todo");
+    // const todo2 = document.querySelectorAll(".todo2");
+    // const todoText = document.querySelectorAll("#todoText");
+    // const buttonsContainer = document.querySelectorAll("#buttonsContainer");
+    // const inputContainer = document.querySelectorAll("#inputContainer");
+    // editButton.forEach((button) => {
+    //     button.addEventListener("click", () => {
+    //         // editInput.forEach((input) => {
+    //         //     input.value = 
+    //         // });
+    //         todo.forEach((todo) => {
+    //             todo.classList.add("todo2");
+    //         });
+    //         todo2.forEach((todo) => {
+    //             todo.classList.remove("todo");
+    //         });
+    //         todoText.forEach((text) => {
+    //             text.classList.add("hidden");
+    //         });
+    //         buttonsContainer.forEach((container) => {
+    //             container.classList.add("hidden");
+    //         });
+    //         inputContainer.forEach((container) => {
+    //             container.classList.remove("hidden");
+    //         });
+    //     });
+    // });
+    // document.querySelector("#editButton").addEventListener("click", () => {
+    //     document.querySelector("#editInput").value = document.querySelector("#todoText").innerHTML;
+    // });
 
     document.querySelector("#updateTodoButton").addEventListener("click", () => {
         document.querySelector("#todoText").innerHTML = document.querySelector("#editInput").value;

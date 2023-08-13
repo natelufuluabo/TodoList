@@ -90,14 +90,14 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%
     box-shadow: 1rem 1rem 1rem .1rem rgba(5, 5, 5, 0.032);
 }
 
-/* .todo, .todo2 {
+.todo, .todo2 {
     -webkit-animation-name: slideInUp;
     animation-name: slideInUp;
     -webkit-animation-duration: 1.7s;
     animation-duration: 1.7s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
-} */
+}
 @-webkit-keyframes slideInUp {
     0% {
         -webkit-transform: translateY(1500%);
