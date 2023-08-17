@@ -1,26 +1,46 @@
+// Variables
+let id = 0;
+let updateInputShowing = false;
+let todoCompleted = false;
+let filterSelected = "all";
+let todoList = [];
 // Select Elements
 const addInput = document.querySelector("#addInput");
 const addTodoButton = document.querySelector("#addTodoButton");
 const todosContainer = document.querySelector("#todosContainer");
+const allFilterButton = document.querySelector("#allFilter");
+const completedFilterButton = document.querySelector("#completedFilter");
+const uncompletedFilterButton = document.querySelector("#uncompletedFilter");
 
 // Functions 
-const addToDo = (id, value, container) => {
-    const newElement = document.createElement("div");
-    newElement.classList.add("todo");
-    newElement.setAttribute('id', `todo-${id}`);
+const renderTodos = (todoList, todosContainer, filter) => {
+    while (todosContainer.firstChild) {
+        todosContainer.removeChild(todosContainer.firstChild);
+    }
+    if (filter === "uncompleted" || filter === "completed") {
+        const filterTodos = todoList.filter((todoItem) => todoItem.status === filter);
+        filterTodos.map((todoItem) => {
+            todosContainer.prepend(todoItem.element);
+        });
+        return;
+    } 
+    todoList.map((todoItem) => {
+        todosContainer.prepend(todoItem.element);
+    });
+    return;
+}
 
-    const editInputId = `editInput-${id}`;
-    const updateTodoButtonId = `updateTodoButton-${id}`;
-    const buttonsContainerId = `buttonsContainer-${id}`;
-    const todoTextId = `todoText-${id}`;
-    const editButtonId = `editButton-${id}`;
-    const deleteButtonId = `deleteButton-${id}`;
-    const inputContainerId = `inputContainer-${id}`;
-    const todoContainerId = `todo-${id}`;
-    const checkButtonId = `completed-${id}`;
-    const unCheckButtonId = `uncompleted-${id}`;
+const createElement = (todoId, todoValue, elementIds) => {
+    const [
+        editInputId, updateTodoButtonId, buttonsContainerId, todoTextId,
+        editButtonId, deleteButtonId, inputContainerId, 
+        checkButtonId, unCheckButtonId
+    ] = elementIds;
 
-    newElement.innerHTML = `
+    const newTodoItem = document.createElement("div");
+    newTodoItem.classList.add("todo");
+    newTodoItem.setAttribute('id', `todo-${todoId}`);
+    newTodoItem.innerHTML = `
         <div id=${inputContainerId} class="inputContainer hidden">
             <input id=${editInputId} class="addInput" type="text" placeholder="Enter to do here" />
             <button id=${updateTodoButtonId} class="addTodoButton">Update</button>
@@ -32,7 +52,7 @@ const addToDo = (id, value, container) => {
             <button id=${checkButtonId}>
                 <i  class="fa-regular fa-circle-check"></i>
             </button>
-            <p id=${todoTextId} class="todoText">${value}</p>
+            <p id=${todoTextId} class="todoText">${todoValue}</p>
         </div>
         <div id=${buttonsContainerId} class="buttonsContainer">
             <span id=${editButtonId}>Edit</span>
@@ -40,7 +60,73 @@ const addToDo = (id, value, container) => {
         </div>
     `;
 
-    container.prepend(newElement);
+    return newTodoItem;
+};
+
+const updateTodoStatus = (todoCompleted, unCheckButton, checkButton, todoText) => {
+    if (todoCompleted) {
+        checkButton.classList.remove("hidden");
+        unCheckButton.classList.add("hidden");
+        todoText.classList.add("completed");
+        return;
+    } else {
+        unCheckButton.classList.remove("hidden");
+        checkButton.classList.add("hidden");
+        todoText.classList.remove("completed");
+        return;
+    }
+};
+
+const updateInputVisibility = (
+    updateInputShowing, todoContainer, 
+    todoText, buttonsContainer, inputContainer
+) => {
+    if (updateInputShowing) {
+        todoContainer.classList.add("todo2");
+        todoContainer.classList.remove("todo");
+        todoText.classList.add("hidden");
+        buttonsContainer.classList.add("hidden");
+        inputContainer.classList.remove("hidden");
+        return;
+    } else {
+        todoContainer.classList.add("todo");
+        todoContainer.classList.remove("todo2");
+        todoText.classList.remove("hidden");
+        buttonsContainer.classList.remove("hidden");
+        inputContainer.classList.add("hidden");
+        return;
+    }
+};
+
+const addToDo = (todoId, todoValue, todosContainer) => {
+    const editInputId = `editInput-${todoId}`;
+    const updateTodoButtonId = `updateTodoButton-${todoId}`;
+    const buttonsContainerId = `buttonsContainer-${todoId}`;
+    const todoTextId = `todoText-${todoId}`;
+    const editButtonId = `editButton-${todoId}`;
+    const deleteButtonId = `deleteButton-${todoId}`;
+    const inputContainerId = `inputContainer-${todoId}`;
+    const todoContainerId = `todo-${todoId}`;
+    const checkButtonId = `completed-${todoId}`;
+    const unCheckButtonId = `uncompleted-${todoId}`;
+
+    const elementIds = [
+        editInputId, updateTodoButtonId, buttonsContainerId, todoTextId,
+        editButtonId, deleteButtonId, inputContainerId, 
+        checkButtonId, unCheckButtonId
+    ];
+
+    const newTodo = {
+        id: todoId,
+        status: "uncompleted",
+        element: createElement(todoId, todoValue, elementIds)
+    };
+
+    todoList.push(newTodo);
+
+    todoList.map((todoItem) => {
+        todosContainer.prepend(todoItem.element);
+    });
 
     const checkButton = document.querySelector(`#${checkButtonId}`);
     const unCheckButton = document.querySelector(`#${unCheckButtonId}`);
@@ -55,48 +141,85 @@ const addToDo = (id, value, container) => {
 
     checkButton.classList.add("hidden");
     checkButton.addEventListener("click", () => {
-        unCheckButton.classList.remove("hidden");
-        checkButton.classList.add("hidden");
-        todoText.classList.remove("completed");
+        const todoRef = todoId;
+        todoCompleted = false;
+        todoList.forEach((todoItem) => {
+            if (todoItem.id === todoRef) todoItem.status = "uncompleted";
+            return;
+        });
+        updateTodoStatus(todoCompleted, unCheckButton, checkButton, todoText);
+        renderTodos(todoList, todosContainer, filterSelected);
     });
-
+    
     unCheckButton.addEventListener("click", () => {
-        checkButton.classList.remove("hidden");
-        unCheckButton.classList.add("hidden");
-        todoText.classList.add("completed");
+        const todoRef = todoId;
+        todoCompleted = true;
+        todoList.forEach((todoItem) => {
+            if (todoItem.id === todoRef) todoItem.status = "completed";
+            return;
+        });
+        updateTodoStatus(todoCompleted, unCheckButton, checkButton, todoText);
+        renderTodos(todoList, todosContainer, filterSelected);
     });
 
     editButton.addEventListener("click", () => {
         editInput.value = todoText.innerHTML;
-        todoContainer.classList.add("todo2");
-        todoContainer.classList.remove("todo");
-        todoText.classList.add("hidden");
-        buttonsContainer.classList.add("hidden");
-        inputContainer.classList.remove("hidden");
+        updateInputShowing = true;
+        updateInputVisibility(updateInputShowing, todoContainer, todoText, buttonsContainer, inputContainer);
     });
-
+    
     updateTodoButton.addEventListener("click", () => {
         todoText.innerHTML = editInput.value;
-        todoContainer.classList.add("todo");
-        todoContainer.classList.remove("todo2");
-        todoText.classList.remove("hidden");
-        buttonsContainer.classList.remove("hidden");
-        inputContainer.classList.add("hidden");
+        updateInputShowing = false;
+        updateInputVisibility(updateInputShowing, todoContainer, todoText, buttonsContainer, inputContainer);
     });
 
     deleteButton.addEventListener("click", () => {
-        todoContainer.parentNode.removeChild(todoContainer);
-        console.log(todoContainer);
+        const todoRef = todoId;
+        todoList = todoList.filter((todoItem) => todoItem.id !== todoRef);
+        renderTodos(todoList, todosContainer, filterSelected);
     });
 };
-
-let id = 0;
 
 addTodoButton.addEventListener("click", () => {
     const value = addInput.value;
     if (value.length === 0) return;
     addToDo(id, value, todosContainer);
+    console.log(filterSelected);
+    renderTodos(todoList, todosContainer, filterSelected);
     id++;
     addInput.value = "";
 });
 
+allFilterButton.addEventListener("click", () => {
+    filterSelected = "all";
+    allFilterButton.classList.add("selected");
+    allFilterButton.classList.remove("unselected");
+    uncompletedFilterButton.classList.add("unselected");
+    uncompletedFilterButton.classList.remove("selected");
+    completedFilterButton.classList.add("unselected");
+    completedFilterButton.classList.remove("selected");
+    renderTodos(todoList, todosContainer, filterSelected);
+});
+
+uncompletedFilterButton.addEventListener("click", () => {
+    filterSelected = "uncompleted";
+    allFilterButton.classList.remove("selected");
+    allFilterButton.classList.add("unselected");
+    uncompletedFilterButton.classList.remove("unselected");
+    uncompletedFilterButton.classList.add("selected");
+    completedFilterButton.classList.add("unselected");
+    completedFilterButton.classList.remove("selected");
+    renderTodos(todoList, todosContainer, filterSelected);
+});
+
+completedFilterButton.addEventListener("click", () => {
+    filterSelected = "completed";
+    allFilterButton.classList.remove("selected");
+    allFilterButton.classList.add("unselected");
+    uncompletedFilterButton.classList.add("unselected");
+    uncompletedFilterButton.classList.remove("selected");
+    completedFilterButton.classList.remove("unselected");
+    completedFilterButton.classList.add("selected");
+    renderTodos(todoList, todosContainer, filterSelected);
+});
