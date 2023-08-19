@@ -7,12 +7,15 @@
 html, body {
     font-size: 62.5%;
     height: 100%;
+    font-family: 'Roboto', sans-serif;
 }
 
 .appContainer {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 1.5rem;
     height: 100%;
     background: rgb(34,193,195);
 background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
@@ -196,4 +199,29 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%
     color: #30A2FF;
     font-weight: bold;
     text-decoration: underline;
+}
+
+.weather-locationContainer {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    background-color: #444;
+    width: 25%;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: -.1rem .1rem 1rem 1rem rgba(5, 5, 5, 0.092);
+    font-size: 1.4rem;
+    color: #30A2FF;
+}
+
+.weather {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.high-low-temp {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
 }

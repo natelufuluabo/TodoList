@@ -4,6 +4,9 @@ let updateInputShowing = false;
 let todoCompleted = false;
 let filterSelected = "all";
 let todoList = [];
+let latitude;
+let longitude;
+let weatherData = [];
 // Select Elements
 const addInput = document.querySelector("#addInput");
 const addTodoButton = document.querySelector("#addTodoButton");
@@ -223,3 +226,60 @@ completedFilterButton.addEventListener("click", () => {
     completedFilterButton.classList.add("selected");
     renderTodos(todoList, todosContainer, filterSelected);
 });
+
+const months = {
+    "01": "January",
+    "02": "February",
+    "03": "March",
+    "04": "April",
+    "05": "May",
+    "06": "June",
+    "07": "July",
+    "08": "August",
+    "09": "September",
+    "10": "October",
+    "11": "November",
+    "12": "December",
+};
+
+const currentDate = new Date();
+const year = currentDate.getFullYear();
+const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+const day = currentDate.getDate().toString().padStart(2, '0');
+
+const formattedDate = `${months[month]} ${day}, ${year}`;
+
+const fetchWeatherData = async () => {
+    const data = await fetch(`http://api.weatherapi.com/v1/forecast.json?key=f59a323ce8ad472a9dd213908231908&q=Montreal`);
+    const response = await data.json();
+    console.log(response);
+    const location = `${response.location.name}, ${response.location.country}`;
+    const currTemp = `${response.current.temp_c}`;
+    const highTemp = `${response.forecast.forecastday[0].day.maxtemp_c}`;
+    const lowTemp = `${response.forecast.forecastday[0].day.mintemp_c}`;
+    const condition =  `${response.current.condition.text}`
+    const cleanedData = [location, currTemp, condition, highTemp, lowTemp]
+    return cleanedData;
+}
+
+window.addEventListener("load", async () => {
+    weatherData = await fetchWeatherData();
+    const weather = document.querySelector("#weather");
+    
+    const weatherInnerHTML = `
+    <p class="date">${formattedDate}</p>
+    <p class="location">${weatherData[0]}</p>
+    <div class="weather">
+        <p>${weatherData[1]} <sup>o</sup>C</p>
+        <p>${weatherData[2]}</p>
+        <div class="high-low-temp">
+            <p>H: ${weatherData[3]} <sup>o</sup>C</p>
+            <p>|</p>
+            <p>L: ${weatherData[4]} <sup>o</sup>C</p>
+        </div>
+    </div>
+    `;
+    
+    weather.innerHTML = weatherInnerHTML;
+});
+  
