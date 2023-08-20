@@ -249,10 +249,9 @@ const day = currentDate.getDate().toString().padStart(2, '0');
 
 const formattedDate = `${months[month]} ${day}, ${year}`;
 
-const fetchWeatherData = async () => {
-    const data = await fetch(`http://api.weatherapi.com/v1/forecast.json?key=f59a323ce8ad472a9dd213908231908&q=Montreal`);
+const fetchWeatherData = async (city="Montreal") => {
+    const data = await fetch(`http://api.weatherapi.com/v1/forecast.json?key=f59a323ce8ad472a9dd213908231908&q=${city}`);
     const response = await data.json();
-    console.log(response);
     const location = `${response.location.name}, ${response.location.country}`;
     const currTemp = `${response.current.temp_c}`;
     const highTemp = `${response.forecast.forecastday[0].day.maxtemp_c}`;
@@ -262,24 +261,45 @@ const fetchWeatherData = async () => {
     return cleanedData;
 }
 
+const editCityButton = document.querySelector("#editCityButton");
+const city = document.querySelector("#city");
+const cityUpdateContainer = document.querySelector("#cityUpdateContainer");
+const cityInput = document.querySelector("#cityInput");
+const updateCityButton = document.querySelector("#updateCityButton");
+const date = document.querySelector("#date");
+const currTemp = document.querySelector("#currTemp");
+const condition = document.querySelector("#condition");
+const highTemp = document.querySelector("#highTemp");
+const lowTemp = document.querySelector("#lowTemp");
+date.innerHTML = formattedDate;
+
 window.addEventListener("load", async () => {
     weatherData = await fetchWeatherData();
-    const weather = document.querySelector("#weather");
-    
-    const weatherInnerHTML = `
-    <p class="date">${formattedDate}</p>
-    <p class="location">${weatherData[0]}</p>
-    <div class="weather">
-        <p>${weatherData[1]} <sup>o</sup>C</p>
-        <p>${weatherData[2]}</p>
-        <div class="high-low-temp">
-            <p>H: ${weatherData[3]} <sup>o</sup>C</p>
-            <p>|</p>
-            <p>L: ${weatherData[4]} <sup>o</sup>C</p>
-        </div>
-    </div>
-    `;
-    
-    weather.innerHTML = weatherInnerHTML;
+    city.innerHTML = weatherData[0];
+    currTemp.innerHTML = weatherData[1];
+    condition.innerHTML = weatherData[2];
+    highTemp.innerHTML = weatherData[3];
+    lowTemp.innerHTML = weatherData[4];
 });
+
+
+editCityButton.addEventListener("click", () => {
+    cityInput.value = city.innerHTML;
+    cityUpdateContainer.classList.remove("hidden");
+    editCityButton.classList.add("hidden");
+    city.classList.add("hidden");
+});
+
+updateCityButton.addEventListener("click", async () => {
+    weatherData = await fetchWeatherData(cityInput.value);
+    city.innerHTML = weatherData[0];
+    currTemp.innerHTML = weatherData[1];
+    condition.innerHTML = weatherData[2];
+    highTemp.innerHTML = weatherData[3];
+    lowTemp.innerHTML = weatherData[4];
+    editCityButton.classList.remove("hidden");
+    city.classList.remove("hidden");
+    cityUpdateContainer.classList.add("hidden");
+});
+
   

@@ -13,6 +13,24 @@
 <body>
     <div class="appContainer">
         <div id="weather" class="weather-locationContainer">
+            <p id="date" class="date"></p>
+            <div class="location">
+                <p id="city" class="city">---</p>
+                <p id="editCityButton" class="editCity">Change</p>
+                <div id="cityUpdateContainer"  class="inputContainer hidden">
+                    <input id="cityInput"  class="addInput" type="text" placeholder="Enter your city here" />
+                    <button id="updateCityButton" class="updateCityButton">Update</button>
+                </div>
+            </div>
+            <div class="weather">
+                <p id="currTemp">--- <sup>o</sup>C</p>
+                <p id="condition">---</p>
+                <div class="high-low-temp">
+                    <p id="highTemp">H: --- <sup>o</sup>C</p>
+                    <p>|</p>
+                    <p id="lowTemp">L: --- <sup>o</sup>C</p>
+                </div>
+            </div>
         </div>
         <div class="appInterface">
             <h1 class="title">To-do list</h1>

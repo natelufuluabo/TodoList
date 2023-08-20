@@ -63,7 +63,7 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%
     color: rgb(183, 183, 183);
 }
 
-.addTodoButton {
+.addTodoButton, .updateCityButton {
     cursor: pointer;
     border: .15rem solid #1e80a3;
     padding: .51rem 0;
@@ -72,6 +72,10 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%
     font-size: 1.6rem;
     color: #fff;
     background-color: #F266AB;
+}
+
+.updateCityButton {
+    background-color: #1e80a3;
 }
 
 .todosContainer {
@@ -224,4 +228,16 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%
     display: flex;
     gap: 1rem;
     align-items: center;
+}
+
+.location {
+    display: flex;
+    gap: .75rem;
+    align-items: center;
+}
+
+.editCity {
+    text-decoration: underline;
+    color: #fff;
+    cursor: pointer;
 }
