@@ -276,10 +276,10 @@ date.innerHTML = formattedDate;
 window.addEventListener("load", async () => {
     weatherData = await fetchWeatherData();
     city.innerHTML = weatherData[0];
-    currTemp.innerHTML = weatherData[1];
+    currTemp.innerHTML = `${weatherData[1]} <sup>o</sup>C`;
     condition.innerHTML = weatherData[2];
-    highTemp.innerHTML = weatherData[3];
-    lowTemp.innerHTML = weatherData[4];
+    highTemp.innerHTML = `H: ${weatherData[3]} <sup>o</sup>C`;
+    lowTemp.innerHTML = `L: ${weatherData[4]} <sup>o</sup>C`;
 });
 
 
@@ -293,10 +293,10 @@ editCityButton.addEventListener("click", () => {
 updateCityButton.addEventListener("click", async () => {
     weatherData = await fetchWeatherData(cityInput.value);
     city.innerHTML = weatherData[0];
-    currTemp.innerHTML = weatherData[1];
+    currTemp.innerHTML = `${weatherData[1]} <sup>o</sup>C`;
     condition.innerHTML = weatherData[2];
-    highTemp.innerHTML = weatherData[3];
-    lowTemp.innerHTML = weatherData[4];
+    highTemp.innerHTML = `H: ${weatherData[3]} <sup>o</sup>C`;
+    lowTemp.innerHTML = `L: ${weatherData[4]} <sup>o</sup>C`;
     editCityButton.classList.remove("hidden");
     city.classList.remove("hidden");
     cityUpdateContainer.classList.add("hidden");
