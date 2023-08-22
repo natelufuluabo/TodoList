@@ -4,8 +4,6 @@ let updateInputShowing = false;
 let todoCompleted = false;
 let filterSelected = "all";
 let todoList = [];
-let latitude;
-let longitude;
 let weatherData = [];
 // Select Elements
 const addInput = document.querySelector("#addInput");
@@ -16,6 +14,8 @@ const completedFilterButton = document.querySelector("#completedFilter");
 const uncompletedFilterButton = document.querySelector("#uncompletedFilter");
 
 // Functions 
+
+// This function takes care of rendering todo items on screen based on the filter selected by the user
 const renderTodos = (todoList, todosContainer, filter) => {
     while (todosContainer.firstChild) {
         todosContainer.removeChild(todosContainer.firstChild);
@@ -33,6 +33,7 @@ const renderTodos = (todoList, todosContainer, filter) => {
     return;
 }
 
+// This function creates the todo item that will be added to the todo list
 const createElement = (todoId, todoValue, elementIds) => {
     const [
         editInputId, updateTodoButtonId, buttonsContainerId, todoTextId,
@@ -66,6 +67,7 @@ const createElement = (todoId, todoValue, elementIds) => {
     return newTodoItem;
 };
 
+// This functions updates the status of the todo items
 const updateTodoStatus = (todoCompleted, unCheckButton, checkButton, todoText) => {
     if (todoCompleted) {
         checkButton.classList.remove("hidden");
@@ -80,6 +82,7 @@ const updateTodoStatus = (todoCompleted, unCheckButton, checkButton, todoText) =
     }
 };
 
+// This function toggles the visibility of the input element that is used to update the todo item
 const updateInputVisibility = (
     updateInputShowing, todoContainer, 
     todoText, buttonsContainer, inputContainer
